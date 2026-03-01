@@ -31,7 +31,12 @@ DESTINATIONS = [d.strip() for d in os.getenv("DESTINATIONS", "").split(",") if d
 TODAY = datetime.now().strftime("%d %B %Y")
 TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
-
+SECTIONS =  [
+    ("VD Report", "B8:X14", "Hello Team, Overall Leader level sales view summary along with their Overall target's."),
+    ("VD Report", "B17:U23", "#Leader level sales view summary along with their day target's."),
+    ("VD Top Batch Day View", "A21:F37", "#Top Batch Day Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "J23:O37", "#Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+]
 print("✅ Environment Variables Loaded")
 
 def get_google_creds():
@@ -100,12 +105,7 @@ def export_range_image(creds, sheet_name, range_name):
 def generate_dynamic_single_page_clean():
     creds = get_google_creds()
 
-    sections =  [
-        ("VD Report", "B8:X14", "Hello Team, Overall Leader level sales view summary along with their Overall target's."),
-        ("VD Report", "B17:U23", "#Leader level sales view summary along with their day target's."),
-        ("VD Top Batch Day View", "A21:F37", "#Top Batch Day Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "J23:O37", "#Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ]
+
 
     images_data = []
     total_h = 0
@@ -114,7 +114,7 @@ def generate_dynamic_single_page_clean():
     USABLE_WIDTH = PAGE_WIDTH - (MARGIN * 2)
 
     print("📄 Capturing regions from Google Sheets...")
-    for sheet_name, range_name, description in sections:
+    for sheet_name, range_name, description in SECTIONS:
         print(f"   -> {sheet_name} ({range_name})")
         img_reader, w, h = export_range_image(creds, sheet_name, range_name)
         
