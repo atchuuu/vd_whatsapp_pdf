@@ -15,19 +15,18 @@ import boto3
 
 GOOGLE_CREDENTIALS_JSON = os.environ.get("GOOGLE_CREDENTIALS_JSON")
 
-SHEET_ID = os.environ.get("SHEET_ID", "1_67K2zI1XRFAx8PB9NkV9lbwfT84uGOAyKCRrWxprxU")
+SHEET_ID = os.environ.get("SHEET_ID")
 
 R2_ACCOUNT_ID = os.environ.get("R2_ACCOUNT_ID")
 R2_ACCESS_KEY = os.environ.get("R2_ACCESS_KEY")
 R2_SECRET_KEY = os.environ.get("R2_SECRET_KEY")
-R2_BUCKET_NAME = os.environ.get("R2_BUCKET_NAME", "whatsapp-reports")
-R2_PUBLIC_BASE = os.environ.get("R2_PUBLIC_BASE", "https://pub-dd91ca5649e84cfe93f20e9fb4468ed8.r2.dev")
+R2_BUCKET_NAME = os.environ.get("R2_BUCKET_NAME")
+R2_PUBLIC_BASE = os.environ.get("R2_PUBLIC_BASE")
 
 AISENSY_API_KEY = os.environ.get("AISENSY_API_KEY")
-CAMPAIGN_NAME = os.environ.get("CAMPAIGN_NAME", "Central Analytics PDF Automation")
+CAMPAIGN_NAME = os.environ.get("CAMPAIGN_NAME")
 
-dests_env = os.environ.get("DESTINATIONS", "916303054457")
-DESTINATIONS = [d.strip() for d in dests_env.split(",")]
+DESTINATIONS = [d.strip() for d in os.getenv("DESTINATIONS", "").split(",") if d.strip()]
 
 TODAY = datetime.now().strftime("%d %B %Y")
 TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -196,7 +195,10 @@ def send_to_aisensy(url):
 if __name__ == "__main__":
     try:
         missing_vars = []
-        for v in ["GOOGLE_CREDENTIALS_JSON", "R2_ACCOUNT_ID", "R2_ACCESS_KEY", "R2_SECRET_KEY", "AISENSY_API_KEY"]:
+        for v in [
+            "GOOGLE_CREDENTIALS_JSON", "R2_ACCOUNT_ID", "R2_ACCESS_KEY", "R2_SECRET_KEY", "R2_BUCKET_NAME", "R2_PUBLIC_BASE",
+            "AISENSY_API_KEY", "SHEET_ID", "DESTINATIONS", "CAMPAIGN_NAME"
+        ]:
             if not os.environ.get(v):
                 missing_vars.append(v)
         
