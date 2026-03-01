@@ -35,4 +35,4 @@ jobs:
         DESTINATIONS: ${{ secrets.DESTINATIONS }}
         CAMPAIGN_NAME: ${{ secrets.CAMPAIGN_NAME }}
       run: |
-        python generate_report_actions.py
+        python vd_pdf.py
