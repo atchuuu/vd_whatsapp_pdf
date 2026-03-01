@@ -32,8 +32,8 @@ TODAY = datetime.now().strftime("%d %B %Y")
 TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
 SECTIONS =  [
-    ("VD Report", "B8:X14", "Hello Team, Overall Leader level sales view summary along with their Overall target's."),
-    ("VD Report", "B17:U23", "#Leader level sales view summary along with their day target's."),
+    ("VD Report", "B8:X14", "Hello Team, Overall Leader level sales view summary along with their Overall targets."),
+    ("VD Report", "B17:U23", "#Leader level sales view summary along with their day targets."),
     ("VD Top Batch Day View", "A21:F37", "#Top Batch Day Sales View with 2-year comparison and YoY growth."),
     ("VD Top Batch Day View", "J23:O37", "#Top Batch YTD Sales View with 2-year comparison and YoY growth.")
 ]
