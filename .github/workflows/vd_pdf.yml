@@ -1,4 +1,4 @@
-name: Generate and Send PDF Report
+name: Generate and Send VD PDF Report
 
 on:
   workflow_dispatch:
