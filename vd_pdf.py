@@ -30,7 +30,7 @@ DESTINATIONS = [d.strip() for d in os.getenv("DESTINATIONS", "").split(",") if d
 
 TODAY = datetime.now().strftime("%d %B %Y")
 TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
-FILE_NAME = "VD_Report.pdf"
+FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
 
 print("✅ Environment Variables Loaded")
 
