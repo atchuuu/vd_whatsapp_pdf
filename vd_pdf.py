@@ -48,7 +48,7 @@ SECTIONS =  [
     ("VD Top Batch Day View", "A89:F105", "#Top Batch Day 5 Sales View with 2-year comparison and YoY growth."),
     ("VD Top Batch Day View", "L91:Q105", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
     ("VD Top Batch Day View", "A106:F122", "#Top Batch Day 6 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L123:Q122", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L108:Q122", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
     ("VD Top Batch Day View", "A123:F139", "#Top Batch Day 7 Sales View with 2-year comparison and YoY growth."),
     ("VD Top Batch Day View", "L125:Q139", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
 ]
