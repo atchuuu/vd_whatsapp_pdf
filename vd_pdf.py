@@ -34,8 +34,22 @@ FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
 SECTIONS =  [
     ("VD Report", "B8:X14", "Hello Team, Overall Leader level sales view summary along with their Overall targets."),
     ("VD Report", "B27:U33", "#Leader level sales view summary along with their day targets."),
-    ("VD Top Batch Day View", "A38:F54", "#Top Batch Day Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L40:Q54", "#Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ("VD Top Batch Day View", "A5:F20", "#Top Batch Day 0 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L6:Q20", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "A21:F37", "#Top Batch Day 1 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L23:Q37", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "A38:F54", "#Top Batch Day 2 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L40:Q54", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "A55:F71", "#Top Batch Day 3 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L57:Q71", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "A72:F88", "#Top Batch Day 4 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L74:Q88", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "A89:F105", "#Top Batch Day 5 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L91:Q105", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "A106:F122", "#Top Batch Day 6 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L123:Q122", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "A123:F139", "#Top Batch Day 7 Sales View with 2-year comparison and YoY growth."),
+    ("VD Top Batch Day View", "L125:Q139", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
 ]
 print("✅ Environment Variables Loaded")
 
