@@ -163,10 +163,11 @@ def generate_dynamic_single_page_clean():
     # Draw Header Text
     c.setFillColor(colors.white)
     c.setFont("Helvetica-Bold", 48)
-    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - Vishwas Diwas Analytics Report")
+    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - Vishwas Diwas Day Closing Summary")
     
     c.setFont("Helvetica", 24)
-    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 - 30, f"Generated on: {TODAY}")
+    report_date = (datetime.now(pytz.timezone('Asia/Kolkata')) - timedelta(days=1)).strftime("%d %B %Y")
+    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 - 30, f"Report Date: {report_date}")
     
     current_y = PAGE_HEIGHT - HEADER_HEIGHT - MARGIN
 
