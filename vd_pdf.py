@@ -11,7 +11,8 @@ from PIL import Image, ImageChops
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
 from reportlab.lib import colors
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz
 import boto3
 
 GOOGLE_CREDENTIALS_JSON = os.environ.get("GOOGLE_CREDENTIALS_JSON")
@@ -29,29 +30,59 @@ CAMPAIGN_NAME = os.environ.get("CAMPAIGN_NAME")
 
 DESTINATIONS = [d.strip() for d in os.getenv("DESTINATIONS", "").split(",") if d.strip()]
 
-TODAY = datetime.now().strftime("%d %B %Y")
-TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
+ist_now = datetime.now(pytz.timezone('Asia/Kolkata'))
+TODAY = ist_now.strftime("%d %B %Y")
+TIMESTAMP = ist_now.strftime("%Y%m%d_%H%M%S")
 FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
-SECTIONS =  [
+
+event_start_date = datetime(2026, 3, 1, tzinfo=pytz.timezone('Asia/Kolkata'))
+day_diff = (ist_now.date() - event_start_date.date()).days
+
+BASE_SECTIONS = [
     ("VD Report", "B8:X14", "Hello Team, Overall Leader level sales view summary along with their Overall targets."),
-    ("VD Report", "B27:U33", "#Leader level sales view summary along with their day targets."),
-    ("VD Top Batch Day View", "A5:F20", "#Top Batch Day 0 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L6:Q20", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "A21:F37", "#Top Batch Day 1 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L23:Q37", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "A38:F54", "#Top Batch Day 2 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L40:Q54", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "A55:F71", "#Top Batch Day 3 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L57:Q71", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "A72:F88", "#Top Batch Day 4 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L74:Q88", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "A89:F105", "#Top Batch Day 5 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L91:Q105", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "A106:F122", "#Top Batch Day 6 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L108:Q122", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "A123:F139", "#Top Batch Day 7 Sales View with 2-year comparison and YoY growth."),
-    ("VD Top Batch Day View", "L125:Q139", "#Top Batch YTD Sales View with 2-year comparison and YoY growth."),
+    ("VD Report", "B27:U33", "Leader level sales view summary along with their day targets.")
 ]
+
+DAY_VIEWS = [
+    [ 
+        ("VD Top Batch Day View", "A5:F20", "Top Batch Day 0 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L6:Q20", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A21:F37", "Top Batch Day 1 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L23:Q37", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A38:F54", "Top Batch Day 2 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L40:Q54", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A55:F71", "Top Batch Day 3 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L57:Q71", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A72:F88", "Top Batch Day 4 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L74:Q88", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A89:F105", "Top Batch Day 5 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L91:Q105", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A106:F122", "Top Batch Day 6 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L123:Q122", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A123:F139", "Top Batch Day 7 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L125:Q139", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ]
+]
+
+SECTIONS = list(BASE_SECTIONS)
+max_day_index = min(max(0, day_diff), 7)
+for i in range(0, max_day_index + 1):
+    SECTIONS.extend(DAY_VIEWS[i])
+
 print("✅ Environment Variables Loaded")
 
 def get_google_creds():
@@ -141,7 +172,7 @@ def generate_dynamic_single_page_clean():
     print("📄 Capturing regions from Google Sheets...")
     for sheet_name, range_name, description in SECTIONS:
         print(f"   -> {sheet_name} ({range_name})")
-        time.sleep(2)  # Delay to prevent rate limiting
+        time.sleep(2)  
         img_reader, w, h = export_range_image(creds, sheet_name, range_name)
         
         scale = USABLE_WIDTH / w
@@ -152,15 +183,13 @@ def generate_dynamic_single_page_clean():
         images_data.append((img_reader, target_w, target_h, description))
         
     HEADER_HEIGHT = 150
-    PAGE_HEIGHT = total_h + (MARGIN * 2) + HEADER_HEIGHT + 50 # Add extra bottom margin just in case
+    PAGE_HEIGHT = total_h + (MARGIN * 2) + HEADER_HEIGHT + 50 
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=(PAGE_WIDTH, PAGE_HEIGHT))
     
-    # Draw Header Background
-    c.setFillColorRGB(0.08, 0.15, 0.36) # Professional Dark Blue
+    c.setFillColorRGB(0.08, 0.15, 0.36) 
     c.rect(0, PAGE_HEIGHT - HEADER_HEIGHT, PAGE_WIDTH, HEADER_HEIGHT, fill=True, stroke=False)
     
-    # Draw Header Text
     c.setFillColor(colors.white)
     c.setFont("Helvetica-Bold", 48)
     c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - Vishwas Diwas Day Closing Summary")
@@ -174,30 +203,24 @@ def generate_dynamic_single_page_clean():
     for img_reader, target_w, target_h, description in images_data:
         clean_desc = description.lstrip('#').strip()
         
-        # Section Header Box
-        c.setFillColorRGB(0.96, 0.96, 0.98) # Very light blue-grey
+        c.setFillColorRGB(0.96, 0.96, 0.98) 
         c.roundRect(MARGIN, current_y - 60, USABLE_WIDTH, 60, 10, fill=True, stroke=False)
         
-        # Section Header Text
         c.setFillColorRGB(0.1, 0.1, 0.1)
         c.setFont("Helvetica-Bold", 30)
-        # Vertically center text in the box
         c.drawString(MARGIN + 20, current_y - 42, clean_desc)
         
-        current_y -= 80 # Move past header box + 20px padding
-        current_y -= target_h # Move to bottom of image placement
+        current_y -= 80 
+        current_y -= target_h 
         
-        # Draw image border
         c.setStrokeColorRGB(0.85, 0.85, 0.85)
         c.setLineWidth(2)
         c.rect(MARGIN - 2, current_y - 2, target_w + 4, target_h + 4, fill=False, stroke=True)
         
-        # Draw Image
         c.drawImage(img_reader, MARGIN, current_y, width=target_w, height=target_h, preserveAspectRatio=True, mask='auto')
         
-        current_y -= 80 # Padding between bottom of image and start of next section
+        current_y -= 80 
 
-    # Footer
     c.setFillColorRGB(0.6, 0.6, 0.6)
     c.setFont("Helvetica", 20)
     c.drawCentredString(PAGE_WIDTH / 2.0, MARGIN / 2, "CONFIDENTIAL - Internal Use Only")
