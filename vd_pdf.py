@@ -2,6 +2,7 @@ import io
 import os
 import json
 import requests
+import time
 from google.oauth2.service_account import Credentials
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
@@ -96,8 +97,18 @@ def export_range_image(creds, sheet_name, range_name):
         f"&fzr=false&top_margin=0&bottom_margin=0&left_margin=0&right_margin=0"
     )
 
-    response = requests.get(export_url, headers={"Authorization": f"Bearer {creds.token}"}, timeout=120)
-    response.raise_for_status()
+    max_retries = 5
+    for attempt in range(max_retries):
+        response = requests.get(export_url, headers={"Authorization": f"Bearer {creds.token}"}, timeout=120)
+        if response.status_code == 429:
+            delay = 2 ** attempt * 2
+            print(f"⚠️ Rate limited (429) for {range_name}. Retrying in {delay} seconds...")
+            time.sleep(delay)
+            continue
+        response.raise_for_status()
+        break
+    else:
+        response.raise_for_status()
 
     if not response.content.startswith(b"%PDF"):
         raise Exception("Invalid PDF returned from Google")
@@ -130,28 +141,65 @@ def generate_dynamic_single_page_clean():
     print("📄 Capturing regions from Google Sheets...")
     for sheet_name, range_name, description in SECTIONS:
         print(f"   -> {sheet_name} ({range_name})")
+        time.sleep(2)  # Delay to prevent rate limiting
         img_reader, w, h = export_range_image(creds, sheet_name, range_name)
         
         scale = USABLE_WIDTH / w
         target_w = USABLE_WIDTH
         target_h = h * scale
         
-        total_h += target_h + 150  
+        total_h += target_h + 160  
         images_data.append((img_reader, target_w, target_h, description))
         
-    PAGE_HEIGHT = total_h + MARGIN
+    HEADER_HEIGHT = 150
+    PAGE_HEIGHT = total_h + (MARGIN * 2) + HEADER_HEIGHT + 50 # Add extra bottom margin just in case
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=(PAGE_WIDTH, PAGE_HEIGHT))
-    current_y = PAGE_HEIGHT - MARGIN
+    
+    # Draw Header Background
+    c.setFillColorRGB(0.08, 0.15, 0.36) # Professional Dark Blue
+    c.rect(0, PAGE_HEIGHT - HEADER_HEIGHT, PAGE_WIDTH, HEADER_HEIGHT, fill=True, stroke=False)
+    
+    # Draw Header Text
+    c.setFillColor(colors.white)
+    c.setFont("Helvetica-Bold", 48)
+    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - Volume Drivers Analytics Report")
+    
+    c.setFont("Helvetica", 24)
+    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 - 30, f"Generated on: {TODAY}")
+    
+    current_y = PAGE_HEIGHT - HEADER_HEIGHT - MARGIN
 
     for img_reader, target_w, target_h, description in images_data:
-        current_y -= 50
-        c.setFont("Helvetica-Bold", 32)
-        c.setFillColor(colors.black)
-        c.drawCentredString(PAGE_WIDTH / 2.0, current_y, description)
-        current_y -= (target_h + 40)
+        clean_desc = description.lstrip('#').strip()
+        
+        # Section Header Box
+        c.setFillColorRGB(0.96, 0.96, 0.98) # Very light blue-grey
+        c.roundRect(MARGIN, current_y - 60, USABLE_WIDTH, 60, 10, fill=True, stroke=False)
+        
+        # Section Header Text
+        c.setFillColorRGB(0.1, 0.1, 0.1)
+        c.setFont("Helvetica-Bold", 30)
+        # Vertically center text in the box
+        c.drawString(MARGIN + 20, current_y - 42, clean_desc)
+        
+        current_y -= 80 # Move past header box + 20px padding
+        current_y -= target_h # Move to bottom of image placement
+        
+        # Draw image border
+        c.setStrokeColorRGB(0.85, 0.85, 0.85)
+        c.setLineWidth(2)
+        c.rect(MARGIN - 2, current_y - 2, target_w + 4, target_h + 4, fill=False, stroke=True)
+        
+        # Draw Image
         c.drawImage(img_reader, MARGIN, current_y, width=target_w, height=target_h, preserveAspectRatio=True, mask='auto')
-        current_y -= 80
+        
+        current_y -= 80 # Padding between bottom of image and start of next section
+
+    # Footer
+    c.setFillColorRGB(0.6, 0.6, 0.6)
+    c.setFont("Helvetica", 20)
+    c.drawCentredString(PAGE_WIDTH / 2.0, MARGIN / 2, "CONFIDENTIAL - Internal Use Only")
 
     c.save()
     buffer.seek(0)
