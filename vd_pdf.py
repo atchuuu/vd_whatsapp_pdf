@@ -80,7 +80,7 @@ DAY_VIEWS = [
 
 SECTIONS = list(BASE_SECTIONS)
 max_day_index = min(max(0, day_diff), 7)
-for i in range(0, max_day_index + 1):
+for i in range(0, max_day_index):
     SECTIONS.extend(DAY_VIEWS[i])
 
 print("✅ Environment Variables Loaded")
