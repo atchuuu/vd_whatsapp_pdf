@@ -35,7 +35,7 @@ TODAY = ist_now.strftime("%d %B %Y")
 TIMESTAMP = ist_now.strftime("%Y%m%d_%H%M%S")
 FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
 
-event_start_date = datetime(2026, 3, 1, tzinfo=pytz.timezone('Asia/Kolkata'))
+event_start_date = datetime(2026, 2, 28, tzinfo=pytz.timezone('Asia/Kolkata'))
 day_diff = (ist_now.date() - event_start_date.date()).days
 
 BASE_SECTIONS = [
