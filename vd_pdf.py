@@ -70,7 +70,7 @@ DAY_VIEWS = [
     ],
     [ 
         ("VD Top Batch Day View", "A106:F122", "Top Batch Day 6 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L123:Q122", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View", "L108:Q122", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
     ],
     [ 
         ("VD Top Batch Day View", "A123:F139", "Top Batch Day 7 Sales View with 2-year comparison and YoY growth."),
