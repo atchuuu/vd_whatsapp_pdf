@@ -75,11 +75,15 @@ DAY_VIEWS = [
     [ 
         ("VD Top Batch Day View", "A123:F139", "Top Batch Day 7 Sales View with 2-year comparison and YoY growth."),
         ("VD Top Batch Day View", "L125:Q139", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+    ],
+    [ 
+        ("VD Top Batch Day View", "A140:F156", "Top Batch Day 8 Sales View with 2-year comparison and YoY growth."),
+        ("VD Top Batch Day View", "L142:Q156", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
     ]
 ]
 
 SECTIONS = list(BASE_SECTIONS)
-max_day_index = min(max(0, day_diff), 7)
+max_day_index = min(max(0, day_diff), 8)
 for i in range(0, max_day_index):
     SECTIONS.extend(DAY_VIEWS[i])
 
