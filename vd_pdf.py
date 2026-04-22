@@ -178,7 +178,7 @@ def generate_dynamic_single_page_clean():
     
     c.setFillColor(colors.white)
     c.setFont("Helvetica-Bold", 48)
-    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - Vishwas Diwas Day Closing Summary")
+    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - 15 April - 21 April")
     
     c.setFont("Helvetica", 24)
     report_date = (datetime.now(pytz.timezone('Asia/Kolkata')) - timedelta(days=1)).strftime("%d %B %Y")
