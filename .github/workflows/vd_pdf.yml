@@ -2,7 +2,7 @@ name: Generate and Send VD PDF Report
 
 on:
   schedule:
-    # - cron: '30 19 * * *'
+    - cron: None
   workflow_dispatch:
 
 jobs:
