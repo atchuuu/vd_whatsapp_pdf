@@ -33,7 +33,7 @@ DESTINATIONS = [d.strip() for d in os.getenv("DESTINATIONS", "").split(",") if d
 ist_now = datetime.now(pytz.timezone('Asia/Kolkata'))
 TODAY = ist_now.strftime("%d %B %Y")
 TIMESTAMP = ist_now.strftime("%Y%m%d_%H%M%S")
-FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
+FILE_NAME = f"April 15 - April 21 YTD Report.pdf"
 
 event_start_date = datetime(2026, 4, 15, tzinfo=pytz.timezone('Asia/Kolkata'))
 day_diff = (ist_now.date() - event_start_date.date()).days
@@ -178,7 +178,7 @@ def generate_dynamic_single_page_clean():
     
     c.setFillColor(colors.white)
     c.setFont("Helvetica-Bold", 48)
-    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - 15 April - 21 April")
+    c.drawString(MARGIN, PAGE_HEIGHT - HEADER_HEIGHT / 2 + 10, "PW Online - 15 April - 21 April YTD Report")
     
     c.setFont("Helvetica", 24)
     report_date = (datetime.now(pytz.timezone('Asia/Kolkata')) - timedelta(days=1)).strftime("%d %B %Y")
