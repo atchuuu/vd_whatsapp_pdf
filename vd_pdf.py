@@ -38,76 +38,30 @@ FILE_NAME = f"VD_Report_{TIMESTAMP}.pdf"
 event_start_date = datetime(2026, 2, 28, tzinfo=pytz.timezone('Asia/Kolkata'))
 day_diff = (ist_now.date() - event_start_date.date()).days
 
-BASE_SECTIONS = [
-    ("VD Report", "B8:X14", "Hello Team, Overall Leader level sales view summary along with their Overall targets."),
-    ("VD Report", "B27:U33", "Leader level sales view summary along with their day targets.")
-]
+BASE_SECTIONS = []
 
 DAY_VIEWS = [
     [
-        ("VD Top Batch Day View", "A5:F20", "Top Batch Day 0 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L6:Q20", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View 1st April Onwards", "K256:R274", "Top Batch YTD Sales View(upto 15 April, 2026) with 2-year comparison and YoY growth.")
     ],
     [
-        ("VD Top Batch Day View", "A21:F37", "Top Batch Day 1 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L23:Q37", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View 1st April Onwards", "K277:R295", "Top Batch YTD Sales View(upto 16 April, 2026) with 2-year comparison and YoY growth.")
     ],
     [
-        ("VD Top Batch Day View", "A38:F54", "Top Batch Day 2 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L40:Q54", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View 1st April Onwards", "K298:R316", "Top Batch YTD Sales View(upto 17 April, 2026) with 2-year comparison and YoY growth.")
     ],
     [
-        ("VD Top Batch Day View", "A55:F71", "Top Batch Day 3 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L57:Q71", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View 1st April Onwards", "K319:R337", "Top Batch YTD Sales View(upto 18 April, 2026) with 2-year comparison and YoY growth.")
     ],
     [
-        ("VD Top Batch Day View", "A72:F88", "Top Batch Day 4 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L74:Q88", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View 1st April Onwards", "K340:R358", "Top Batch YTD Sales View(upto 19 April, 2026) with 2-year comparison and YoY growth.")
     ],
     [
-        ("VD Top Batch Day View", "A89:F105", "Top Batch Day 5 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L91:Q105", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View 1st April Onwards", "K361:R379", "Top Batch YTD Sales View(upto 20 April, 2026) with 2-year comparison and YoY growth.")
     ],
     [
-        ("VD Top Batch Day View", "A106:F122", "Top Batch Day 6 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L108:Q122", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
+        ("VD Top Batch Day View 1st April Onwards", "K382:R400", "Top Batch YTD Sales View(upto 21 April, 2026) with 2-year comparison and YoY growth.")
     ],
-    [
-        ("VD Top Batch Day View", "A123:F139", "Top Batch Day 7 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L125:Q139", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A140:F156", "Top Batch Day 8 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L142:Q156", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A157:F173", "Top Batch Day 9 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L159:Q173", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A174:F190", "Top Batch Day 10 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L176:Q190", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A191:F207", "Top Batch Day 11 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L193:Q207", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A208:F224", "Top Batch Day 12 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L210:Q224", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A225:F241", "Top Batch Day 13 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L227:Q241", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A242:F258", "Top Batch Day 14 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L244:Q258", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ],
-    [
-        ("VD Top Batch Day View", "A259:F275", "Top Batch Day 15 Sales View with 2-year comparison and YoY growth."),
-        ("VD Top Batch Day View", "L261:Q275", "Top Batch YTD Sales View with 2-year comparison and YoY growth.")
-    ]
 ]
 
 SECTIONS = list(BASE_SECTIONS)
